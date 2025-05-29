@@ -46,12 +46,18 @@ export function LoginForm(props) {
         try {
             const res = await AuthService.login(values);
             if (res.status === 200) {
-                const { accessToken, username } = res?.data;
-                localStorage.setItem("token", accessToken);
-                localStorage.setItem("employeeId", username);
-                setStatus({ success: true });
-                setSubmitting(false);
-                history.push("/actionPage");
+                const { accessToken, username, scode, sdesc } = res?.data;
+                if (scode === '01') {
+                    localStorage.setItem("token", accessToken);
+                    localStorage.setItem("employeeId", username);
+                    setStatus({ success: true });
+                    setSubmitting(false);
+                    history.push("/actionPage");
+                } else {
+                    setStatus({ success: false });
+                    setErrors({ submit: sdesc });
+                    setSubmitting(false);
+                }
             } else {
                 setStatus({ success: false });
                 setErrors({ submit: res.data.sdesc });
