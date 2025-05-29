@@ -20,9 +20,9 @@ export default function App() {
       <Router>
         <Switch>
           <Route exact path="/" render={() => <Redirect to="/login" />} />
-          <Route path="/login" component={AccountBox} />
-          <Route path="/signup" component={AccountBox} />
+          <Route path={["/login", "/signup"]} component={AccountBox} />
           <Route path="/actionPage" component={ActionPage} />
+          <Route render={() => <Redirect to="/login" />} /> {/* fallback */}
         </Switch>
       </Router>
     </AppContainer>
