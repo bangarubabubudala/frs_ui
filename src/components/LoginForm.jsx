@@ -14,12 +14,12 @@ import { Field, FormikProvider, useFormik } from "formik";
 import * as Yup from 'yup';
 import { PasswordField } from "./commonFunctions.jsx";
 import AuthService from "./AuthService.jsx";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Alert, Col } from "react-bootstrap";
 
 export function LoginForm(props) {
     const { switchToSignup } = useContext(AccountContext);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const initialValues = {
         username: "",
@@ -47,23 +47,31 @@ export function LoginForm(props) {
             const res = await AuthService.login(values);
             if (res.status === 200) {
                 const { accessToken, username, scode, sdesc } = res?.data;
-                if (scode === '01') {
+                console.log("res?.data",res?.data);
+                if (scode == '01') {
+                    console.log("enters here ");
                     localStorage.setItem("token", accessToken);
                     localStorage.setItem("employeeId", username);
                     setStatus({ success: true });
                     setSubmitting(false);
-                    history.push("/actionPage");
+                    navigate("/actionPage");
                 } else {
+                    console.log("enters here 2");
+                    
                     setStatus({ success: false });
                     setErrors({ submit: sdesc });
                     setSubmitting(false);
                 }
             } else {
+                console.log("enrtg here");
+                
                 setStatus({ success: false });
                 setErrors({ submit: res.data.sdesc });
                 setSubmitting(false);
             }
         } catch (error) {
+            console.log("enters here 3");
+            
             console.error("Caught error in login:", error); // ← this should always print on error
             let msg = "Invalid credentials";
             if (error?.response?.status === 401) {

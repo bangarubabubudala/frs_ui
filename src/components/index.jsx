@@ -4,7 +4,7 @@ import { LoginForm } from './LoginForm';
 import { SignupForm } from './signUpForm';
 import { motion } from 'framer-motion';
 import { AccountContext } from '../components/accountContect.jsx';
-import { useLocation } from 'react-router-dom/cjs/react-router-dom.min.js';
+import { useLocation } from 'react-router-dom';
 
 export const BoxContainer = styled.div`
   width: 280px;

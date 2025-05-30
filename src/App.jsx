@@ -2,7 +2,7 @@ import React from "react";
 import "./styles.css";
 import styled from "styled-components";
 import AccountBox from "./components"; // make sure this is the AccountBox file
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ActionPage } from "./components/ActionPage";
 
 const AppContainer = styled.div`
@@ -18,12 +18,12 @@ export default function App() {
   return (
     <AppContainer>
       <Router>
-        <Switch>
-          <Route exact path="/" render={() => <Redirect to="/login" />} />
-          <Route path={["/login", "/signup"]} component={AccountBox} />
-          <Route path="/actionPage" component={ActionPage} />
-          <Route render={() => <Redirect to="/login" />} /> {/* fallback */}
-        </Switch>
+        <Routes>
+          <Route path="/login" element={<AccountBox />} />
+          <Route path="/signup" element={<AccountBox />} />
+          <Route path="/actionPage" element={<ActionPage />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
       </Router>
     </AppContainer>
   );
