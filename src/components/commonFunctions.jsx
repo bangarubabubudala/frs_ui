@@ -38,43 +38,45 @@ export function PasswordField({ value, onChange, name = "password", placeholder 
 
 export async function failureResponse(res) {
 
-    let errorMessage = "Something Went Wrong. Please Try again";
+    let error = "Something Went Wrong. Please Try again";
     if (res.request !== undefined) {
         if (res.request.status === 401) {
             // errorMessage = "Please wait we are refreshing your session."
             // store.dispatch({ type: "HIDE_LOADER", payload: true })
         }
         else if (res.request.status === 403) {
-            errorMessage = "Forbidden Access"
-            fireErrorMessage(errorMessage)
+            error = "Forbidden Access"
+            fireErrorMessage(error)
 
         }
         else if (res.request.status === 500) {
             console.log("####", res?.response)
-            if (res.response.data.errorMessage !== null && res.response.data.errorMessage !== undefined && res.response.data.errorMessage.length > 0) {
-                errorMessage = res.response.data.errorMessage
+            if (res.response.data.error !== null && res.response.data.error !== undefined && res.response.data.error.length > 0) {
+                error = res.response.data.error
             }
-            fireErrorMessage(errorMessage)
+            fireErrorMessage(error)
         }
         else if ((res.request.status === 404) || (res.request.status === 400)) {
-            if (res.response.data.errorMessage !== null && res.response.data.errorMessage !== undefined && res.response.data.errorMessage.length > 0) {
-                errorMessage = res.response.data.errorMessage;
+            console.log("ghdfhdfhdfhfgh---->", res?.response?.data?.error);
+
+            if (res.response.data.error !== null && res.response.data.error !== undefined && res.response.data.error.length > 0) {
+                error = res.response.data.error;
             }
-            fireErrorMessage(errorMessage)
+            fireErrorMessage(error)
         }
         else if (res.request.status === 502) {
-            if (res.response.data.errorMessage !== null && res.response.data.errorMessage !== undefined && res.response.data.errorMessage.length > 0) {
-                errorMessage = "Server unreachable"
+            if (res.response.data.error !== null && res.response.data.error !== undefined && res.response.data.error.length > 0) {
+                error = "Server unreachable"
             }
-            fireErrorMessage(errorMessage)
+            fireErrorMessage(error)
         }
         else if (res.request.status === 504) {
-            if (res.response.data.errorMessage !== null && res.response.data.errorMessage !== undefined && res.response.data.errorMessage.length > 0) {
-                errorMessage = "Server Time out"
+            if (res.response.data.error !== null && res.response.data.error !== undefined && res.response.data.error.length > 0) {
+                error = "Server Time out"
             }
-            fireErrorMessage(errorMessage)
+            fireErrorMessage(error)
         } else {
-            fireErrorMessage(errorMessage)
+            fireErrorMessage(error)
         }
 
     }
