@@ -41,23 +41,21 @@ export function LoginForm(props) {
     })
     const { values, isValid, setFieldValue, touched, errors, handleSubmit, handleChange, resetForm, setErrors, setStatus, setSubmitting } = formik
 
- const onClickSignIn = async () => {
-    console.log("SIGNIN CLICKED WITH VALUES:", values);
+const onClickSignIn = async () => {
     try {
-        const response = await fetch('/https://api.apnidhi.in/cfshrms/api/auth/signin', {
+        const res = await fetch('https://api.apnidhi.in/cfshrms/api/auth/signin', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(values)
         });
 
-        const data = await response.json(); 
+        const data = await res.json();
 
-        if (response.status === 200) {
+        if (res.ok) {
             const { accessToken, username, scode, sdesc, employee_name } = data;
-            console.log("API Response:", data);
-
             if (scode === '01') {
-                console.log("Login successful.");
                 localStorage.setItem("token", accessToken);
                 localStorage.setItem("employeeId", username);
                 localStorage.setItem("employee_name", employee_name);

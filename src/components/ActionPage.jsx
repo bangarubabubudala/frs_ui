@@ -44,8 +44,9 @@ export function ActionPage() {
             attendanceType: values?.attendanceType
         };
         const token = localStorage.getItem("token");
+
         try {
-            const response = await fetch('/https://api.apnidhi.in/cfshrms/api/employeeRegistration/attendanceSave', {
+            const response = await fetch('https://api.apnidhi.in/cfshrms/api/employeeRegistration/attendanceSave', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
