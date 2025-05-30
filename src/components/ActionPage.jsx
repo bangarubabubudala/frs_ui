@@ -10,7 +10,7 @@ import { FormikProvider, useFormik } from "formik";
 import * as Yup from "yup";
 import { BackDrop, backdropVariants, BoxContainer, expandingTransition, HeaderContainer, HeaderText, InnerContainer, SmallText, TopContainer } from "./index.jsx";
 import masterServices from "./masterServices.jsx";
-import { showNotification } from "./commonFunctions.jsx";
+import { apiUrl, showNotification } from "./commonFunctions.jsx";
 
 const options = [
     { label: "Clock In", value: "I" },
@@ -46,7 +46,7 @@ export function ActionPage() {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch('https://api.apnidhi.in/cfshrms/api/employeeRegistration/attendanceSave', {
+            const response = await fetch(apiUrl+'employeeRegistration/attendanceSave', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

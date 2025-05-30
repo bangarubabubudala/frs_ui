@@ -12,7 +12,7 @@ import { Marginer } from "../marginer";
 import { AccountContext } from '../components/accountContect.jsx';
 import { Field, FormikProvider, useFormik } from "formik";
 import * as Yup from 'yup';
-import { PasswordField } from "./commonFunctions.jsx";
+import { apiUrl, PasswordField } from "./commonFunctions.jsx";
 import AuthService from "./AuthService.jsx";
 import { useNavigate } from "react-router-dom";
 import { Alert, Col } from "react-bootstrap";
@@ -41,47 +41,47 @@ export function LoginForm(props) {
     })
     const { values, isValid, setFieldValue, touched, errors, handleSubmit, handleChange, resetForm, setErrors, setStatus, setSubmitting } = formik
 
-const onClickSignIn = async () => {
-    try {
-        const res = await fetch('https://api.apnidhi.in/cfshrms/api/auth/signin', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values)
-        });
+    const onClickSignIn = async () => {
+        try {
+            const res = await fetch(apiUrl + '/auth/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values)
+            });
 
-        const data = await res.json();
+            const data = await res.json();
 
-        if (res.ok) {
-            const { accessToken, username, scode, sdesc, employee_name } = data;
-            if (scode === '01') {
-                localStorage.setItem("token", accessToken);
-                localStorage.setItem("employeeId", username);
-                localStorage.setItem("employee_name", employee_name);
-                setStatus({ success: true });
-                setSubmitting(false);
-                navigate("/actionPage");
+            if (res.ok) {
+                const { accessToken, username, scode, sdesc, employee_name } = data;
+                if (scode === '01') {
+                    localStorage.setItem("token", accessToken);
+                    localStorage.setItem("employeeId", username);
+                    localStorage.setItem("employee_name", employee_name);
+                    setStatus({ success: true });
+                    setSubmitting(false);
+                    navigate("/actionPage");
+                } else {
+                    console.warn("Login failed:", sdesc);
+                    setStatus({ success: false });
+                    setErrors({ submit: sdesc });
+                    setSubmitting(false);
+                }
             } else {
-                console.warn("Login failed:", sdesc);
+                console.error("Unexpected status code:", res.status?.toString());
                 setStatus({ success: false });
-                setErrors({ submit: sdesc });
+                setErrors({ submit: data?.sdesc || "Login failed" });
                 setSubmitting(false);
             }
-        } else {
-            console.error("Unexpected status code:", res.status?.toString());
+        } catch (error) {
+            console.error("Caught error in login:", error);
+            let msg = "Something went wrong";
             setStatus({ success: false });
-            setErrors({ submit: data?.sdesc || "Login failed" });
+            setErrors({ submit: msg });
             setSubmitting(false);
         }
-    } catch (error) {
-        console.error("Caught error in login:", error);
-        let msg = "Something went wrong";
-        setStatus({ success: false });
-        setErrors({ submit: msg });
-        setSubmitting(false);
-    }
-};
+    };
 
 
 
