@@ -43,7 +43,7 @@ export function LoginForm(props) {
 
     const onClickSignIn = async () => {
         try {
-            const res = await fetch(apiUrl + '/auth/signin', {
+            const res = await fetch(`${apiUrl}/auth/signin`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

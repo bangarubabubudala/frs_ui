@@ -46,7 +46,7 @@ export function ActionPage() {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch(apiUrl+'employeeRegistration/attendanceSave', {
+            const response = await fetch(`${apiUrl}/employeeRegistration/attendanceSave`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
