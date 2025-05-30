@@ -69,7 +69,7 @@ const onClickSignIn = async () => {
                 setSubmitting(false);
             }
         } else {
-            console.error("Unexpected status code:", response.status);
+            console.error("Unexpected status code:", res.status?.toString());
             setStatus({ success: false });
             setErrors({ submit: data?.sdesc || "Login failed" });
             setSubmitting(false);
