@@ -1,9 +1,9 @@
-import { FRS_URL } from "./AjaxURLs"
+import { FRS_URL, withProxy } from "./AjaxURLs"
 import axiosLoaderServices from "./axiosLoaderServices"
 
 class MasterService {
     FRSActionAPI(formData) {
-        return axiosLoaderServices.post(FRS_URL, formData)
+        return axiosLoaderServices.post(withProxy(FRS_URL), formData)
     }
 }
 export default new MasterService()
