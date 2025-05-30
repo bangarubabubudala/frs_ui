@@ -38,17 +38,34 @@ export function ActionPage() {
 
     const { values, setFieldValue, handleSubmit, errors, touched } = formik;
 
-    const ClockInAndOut = () => {
-        let formData = {}
-        formData['employeeId'] = localStorage.getItem("employeeId")
-        formData['attendanceType'] = values?.attendanceType
-        masterServices.FRSActionAPI(formData).then((res) => {
-            console.log("res------->", res?.data);
-            const { status, messege } = res?.data
-            const statusCode = status === 'Y' ? 'success' : 'error'
-            showNotification(statusCode, messege)
-        })
-    }
+    const ClockInAndOut = async () => {
+        const formData = {
+            employeeId: localStorage.getItem("employeeId"),
+            attendanceType: values?.attendanceType
+        };
+        const token = localStorage.getItem("token");
+        try {
+            const response = await fetch('/api/employeeRegistration/attendanceSave', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+            console.log("res------->", data);
+
+            const { status, messege } = data;
+            const statusCode = status === 'Y' ? 'success' : 'error';
+            showNotification(statusCode, messege);
+        } catch (error) {
+            console.error("Error during clock in/out:", error);
+            showNotification('error', 'Something went wrong');
+        }
+    };
+
 
     const [isExpanded, setExpanded] = useState(false);
     return (

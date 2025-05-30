@@ -41,48 +41,50 @@ export function LoginForm(props) {
     })
     const { values, isValid, setFieldValue, touched, errors, handleSubmit, handleChange, resetForm, setErrors, setStatus, setSubmitting } = formik
 
-    const onClickSignIn = async () => {
-        console.log("SIGNIN CLICKED WITH VALUES:", values);
-        try {
-            const res = await AuthService.login(values);
-            if (res.status === 200) {
-                const { accessToken, username, scode, sdesc,employee_name } = res?.data;
-                console.log("res?.data",res?.data);
-                if (scode == '01') {
-                    console.log("enters here ");
-                    localStorage.setItem("token", accessToken);
-                    localStorage.setItem("employeeId", username);
-                    localStorage.setItem("employee_name", employee_name);
-                    setStatus({ success: true });
-                    setSubmitting(false);
-                    navigate("/actionPage");
-                } else {
-                    console.log("enters here 2");
-                    
-                    setStatus({ success: false });
-                    setErrors({ submit: sdesc });
-                    setSubmitting(false);
-                }
+ const onClickSignIn = async () => {
+    console.log("SIGNIN CLICKED WITH VALUES:", values);
+    try {
+        const response = await fetch('/api/auth/signin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(values)
+        });
+
+        const data = await response.json(); 
+
+        if (response.status === 200) {
+            const { accessToken, username, scode, sdesc, employee_name } = data;
+            console.log("API Response:", data);
+
+            if (scode === '01') {
+                console.log("Login successful.");
+                localStorage.setItem("token", accessToken);
+                localStorage.setItem("employeeId", username);
+                localStorage.setItem("employee_name", employee_name);
+                setStatus({ success: true });
+                setSubmitting(false);
+                navigate("/actionPage");
             } else {
-                console.log("enrtg here");
-                
+                console.warn("Login failed:", sdesc);
                 setStatus({ success: false });
-                setErrors({ submit: res.data.sdesc });
+                setErrors({ submit: sdesc });
                 setSubmitting(false);
             }
-        } catch (error) {
-            console.log("enters here 3");
-            
-            console.error("Caught error in login:", error); // ← this should always print on error
-            let msg = "Invalid credentials";
-            if (error?.response?.status === 401) {
-                msg = error.response.data?.sdesc || msg;
-            }
+        } else {
+            console.error("Unexpected status code:", response.status);
             setStatus({ success: false });
-            setErrors({ submit: msg });
+            setErrors({ submit: data?.sdesc || "Login failed" });
             setSubmitting(false);
         }
-    };
+    } catch (error) {
+        console.error("Caught error in login:", error);
+        let msg = "Something went wrong";
+        setStatus({ success: false });
+        setErrors({ submit: msg });
+        setSubmitting(false);
+    }
+};
+
 
 
     return (
