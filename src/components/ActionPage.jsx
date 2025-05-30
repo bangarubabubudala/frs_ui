@@ -34,6 +34,8 @@ export function ActionPage() {
         },
     });
 
+    const empName = localStorage.getItem("employee_name")
+
     const { values, setFieldValue, handleSubmit, errors, touched } = formik;
 
     const ClockInAndOut = () => {
@@ -59,7 +61,8 @@ export function ActionPage() {
                     transition={expandingTransition}
                 />
                 <HeaderContainer>
-                    <HeaderText>Hello!</HeaderText>
+                    <HeaderText>Hello</HeaderText>
+                    <HeaderText>{empName + "!"}</HeaderText>
                     <SmallText>Welcome to FRS</SmallText>
                 </HeaderContainer>
             </TopContainer>

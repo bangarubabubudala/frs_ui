@@ -46,12 +46,13 @@ export function LoginForm(props) {
         try {
             const res = await AuthService.login(values);
             if (res.status === 200) {
-                const { accessToken, username, scode, sdesc } = res?.data;
+                const { accessToken, username, scode, sdesc,employee_name } = res?.data;
                 console.log("res?.data",res?.data);
                 if (scode == '01') {
                     console.log("enters here ");
                     localStorage.setItem("token", accessToken);
                     localStorage.setItem("employeeId", username);
+                    localStorage.setItem("employee_name", employee_name);
                     setStatus({ success: true });
                     setSubmitting(false);
                     navigate("/actionPage");
