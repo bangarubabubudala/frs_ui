@@ -12,7 +12,7 @@ import { Marginer } from "../marginer";
 import { AccountContext } from '../components/accountContect.jsx';
 import { Field, FormikProvider, useFormik } from "formik";
 import * as Yup from 'yup';
-import { apiUrl, PasswordField } from "./commonFunctions.jsx";
+import { PasswordField } from "./commonFunctions.jsx";
 import AuthService from "./AuthService.jsx";
 import { useNavigate } from "react-router-dom";
 import { Alert, Col } from "react-bootstrap";
@@ -42,20 +42,14 @@ export function LoginForm(props) {
     const { values, isValid, setFieldValue, touched, errors, handleSubmit, handleChange, resetForm, setErrors, setStatus, setSubmitting } = formik
 
     const onClickSignIn = async () => {
+        console.log("SIGNIN CLICKED WITH VALUES:", values);
         try {
-            const res = await fetch(`${apiUrl}/auth/signin`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(values)
-            });
-
-            const data = await res.json();
-
-            if (res.ok) {
-                const { accessToken, username, scode, sdesc, employee_name } = data;
-                if (scode === '01') {
+            const res = await AuthService.login(values);
+            if (res.status === 200) {
+                const { accessToken, username, scode, sdesc,employee_name } = res?.data;
+                console.log("res?.data",res?.data);
+                if (scode == '01') {
+                    console.log("enters here ");
                     localStorage.setItem("token", accessToken);
                     localStorage.setItem("employeeId", username);
                     localStorage.setItem("employee_name", employee_name);
@@ -63,26 +57,32 @@ export function LoginForm(props) {
                     setSubmitting(false);
                     navigate("/actionPage");
                 } else {
-                    console.warn("Login failed:", sdesc);
+                    console.log("enters here 2");
+                    
                     setStatus({ success: false });
                     setErrors({ submit: sdesc });
                     setSubmitting(false);
                 }
             } else {
-                console.error("Unexpected status code:", res.status?.toString());
+                console.log("enrtg here");
+                
                 setStatus({ success: false });
-                setErrors({ submit: data?.sdesc || "Login failed" });
+                setErrors({ submit: res.data.sdesc });
                 setSubmitting(false);
             }
         } catch (error) {
-            console.error("Caught error in login:", error);
-            let msg = "Something went wrong";
+            console.log("enters here 3");
+            
+            console.error("Caught error in login:", error); // ← this should always print on error
+            let msg = "Invalid credentials";
+            if (error?.response?.status === 401) {
+                msg = error.response.data?.sdesc || msg;
+            }
             setStatus({ success: false });
             setErrors({ submit: msg });
             setSubmitting(false);
         }
     };
-
 
 
     return (
