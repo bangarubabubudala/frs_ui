@@ -50,20 +50,31 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderText = styled.div`
-  font-size: 30px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;               /* dark blue-gray */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.03em;
+  margin-bottom: 4px;
+  user-select: none;
   line-height: 1.24;
-  color: #fff;
   z-index: 10;
 `;
 
 export const SmallText = styled.div`
-  font-size: 11px;
-  font-weight: 500;
-  color: #fff;
-  margin-top: 7px;
-  z-index: 10;
+  font-size: 14px;
+  font-weight: 600;
+  color: #5a5a5a;
+  background: linear-gradient(90deg, #3498db, #8e44ad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.05em;
+  user-select: none;
+  margin-top: 7px;  /* keeping this from old */
+  z-index: 10;      /* keeping this from old */
 `;
+
 
 export const InnerContainer = styled.div`
   width: 100%;

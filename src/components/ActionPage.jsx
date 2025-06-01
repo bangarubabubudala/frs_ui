@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import {
+    BackButton,
     BoxContainer as CommonBox,
+    customSelectStyles,
     FormContainer,
     SubmitButton
 } from "./common.jsx";
@@ -11,7 +13,8 @@ import * as Yup from "yup";
 import { BackDrop, backdropVariants, BoxContainer, expandingTransition, HeaderContainer, HeaderText, InnerContainer, SmallText, TopContainer } from "./index.jsx";
 import masterServices from "./masterServices.jsx";
 import { showNotification } from "./commonFunctions.jsx";
-import { FRS_URL } from "./AjaxURLs.jsx";
+import { useNavigate } from "react-router-dom";
+import { HiArrowLeft } from "react-icons/hi";
 
 const options = [
     { label: "Clock In", value: "I" },
@@ -22,6 +25,8 @@ export function ActionPage() {
     const validationSchema = Yup.object().shape({
         selectedOption: Yup.object().required("Please select an option").nullable(),
     });
+
+    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
@@ -83,6 +88,9 @@ export function ActionPage() {
     const [isExpanded, setExpanded] = useState(false);
     return (
         <BoxContainer>
+            <BackButton onClick={() => navigate(-1)} title="Go back">
+                <HiArrowLeft size={18} />
+            </BackButton>
             <TopContainer>
                 <BackDrop
                     initial={false}
@@ -91,9 +99,9 @@ export function ActionPage() {
                     transition={expandingTransition}
                 />
                 <HeaderContainer>
-                    <HeaderText>Hello</HeaderText>
-                    <HeaderText>{empName + "!"}</HeaderText>
-                    <SmallText>Welcome to FRS</SmallText>
+                    <HeaderText>Hello!</HeaderText>
+                    <HeaderText >{empName + "."}</HeaderText>
+                    <SmallText >Welcome to FRS</SmallText>
                 </HeaderContainer>
             </TopContainer>
             <InnerContainer>
@@ -109,6 +117,7 @@ export function ActionPage() {
                                     setFieldValue("attendanceType", selectedOption?.value)
                                 }}
                                 placeholder="Select an option"
+                                 styles={customSelectStyles}
                             />
                             {errors.selectedOption && touched.selectedOption && (
                                 <div style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>
@@ -118,7 +127,12 @@ export function ActionPage() {
                         </FormContainer>
                     </FormikProvider>
                     <Marginer direction="vertical" margin="1.6em" />
-                    <SubmitButton type="submit" form="frsForm">Submit</SubmitButton>
+                    <SubmitButton type="submit" form="frsForm"> Submit </SubmitButton>
+                    {errors.submit && (
+                        <div style={{ color: "red", fontSize: "14px", marginTop: "10px" }}>
+                            {errors.submit}
+                        </div>
+                    )}
                 </CommonBox>
             </InnerContainer>
         </BoxContainer>

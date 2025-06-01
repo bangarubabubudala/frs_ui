@@ -144,7 +144,7 @@ export function LoginForm(props) {
                 </FormContainer>
             </FormikProvider>
             <Marginer direction="vertical" margin="1.6em" />
-            <SubmitButton type="submit" form="signInForm">Signin</SubmitButton>
+            <SubmitButton type="submit" form="signInForm">Sign in</SubmitButton>
             {errors.submit && (
                 <Col sm={12}>
                     <Alert variant="danger">{errors.submit}</Alert>
