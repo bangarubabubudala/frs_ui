@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import { BackDrop, backdropVariants, BoxContainer, expandingTransition, HeaderContainer, HeaderText, InnerContainer, SmallText, TopContainer } from "./index.jsx";
 import masterServices from "./masterServices.jsx";
 import { showNotification } from "./commonFunctions.jsx";
+import { FRS_URL } from "./AjaxURLs.jsx";
 
 const options = [
     { label: "Clock In", value: "I" },
@@ -42,7 +43,7 @@ export function ActionPage() {
         let formData = {}
         formData['employeeId'] = localStorage.getItem("employeeId")
         formData['attendanceType'] = values?.attendanceType
-        masterServices.FRSActionAPI(formData).then((res) => {
+        fetch(FRS_URL, formData).then((res) => {
             console.log("res------->", res?.data);
             const { status, messege } = res?.data
             const statusCode = status === 'Y' ? 'success' : 'error'

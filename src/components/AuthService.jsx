@@ -1,10 +1,10 @@
 import axios from "axios";
-import { LOGIN_API_URL, PROXY_URL, withProxy } from "./AjaxURLs";
+import { LOGIN_API_URL, PROXY_URL } from "./AjaxURLs";
 
 class AuthService {
     login(formData) {
         let loginAxios = axios.create();
-        return loginAxios.post(withProxy(LOGIN_API_URL), formData);
+        return loginAxios.post(LOGIN_API_URL, formData);
     }
 }
 

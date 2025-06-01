@@ -16,6 +16,7 @@ import { PasswordField } from "./commonFunctions.jsx";
 import AuthService from "./AuthService.jsx";
 import { useNavigate } from "react-router-dom";
 import { Alert, Col } from "react-bootstrap";
+import { LOGIN_API_URL } from "./AjaxURLs.jsx";
 
 export function LoginForm(props) {
     const { switchToSignup } = useContext(AccountContext);
@@ -44,10 +45,10 @@ export function LoginForm(props) {
     const onClickSignIn = async () => {
         console.log("SIGNIN CLICKED WITH VALUES:", values);
         try {
-            const res = await AuthService.login(values);
+            const res = await fetch(LOGIN_API_URL, values);
             if (res.status === 200) {
-                const { accessToken, username, scode, sdesc,employee_name } = res?.data;
-                console.log("res?.data",res?.data);
+                const { accessToken, username, scode, sdesc, employee_name } = res?.data;
+                console.log("res?.data", res?.data);
                 if (scode == '01') {
                     console.log("enters here ");
                     localStorage.setItem("token", accessToken);
@@ -58,21 +59,21 @@ export function LoginForm(props) {
                     navigate("/actionPage");
                 } else {
                     console.log("enters here 2");
-                    
+
                     setStatus({ success: false });
                     setErrors({ submit: sdesc });
                     setSubmitting(false);
                 }
             } else {
                 console.log("enrtg here");
-                
+
                 setStatus({ success: false });
                 setErrors({ submit: res.data.sdesc });
                 setSubmitting(false);
             }
         } catch (error) {
             console.log("enters here 3");
-            
+
             console.error("Caught error in login:", error); // ← this should always print on error
             let msg = "Invalid credentials";
             if (error?.response?.status === 401) {

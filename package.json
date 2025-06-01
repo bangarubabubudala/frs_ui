@@ -1,5 +1,5 @@
 {
-  "homepage": "https://bangarubabubudala.github.io/frs_ui",
+  "proxy": "https://api.apnidhi.in/cfsshrms",
   "name": "frs_ui",
   "version": "0.1.0",
   "private": true,
