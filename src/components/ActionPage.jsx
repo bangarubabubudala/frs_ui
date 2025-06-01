@@ -39,17 +39,46 @@ export function ActionPage() {
 
     const { values, setFieldValue, handleSubmit, errors, touched } = formik;
 
+    // const ClockInAndOut = () => {
+    //     let formData = {}
+    //     formData['employeeId'] = localStorage.getItem("employeeId")
+    //     formData['attendanceType'] = values?.attendanceType
+    //     fetch(FRS_URL, formData).then((res) => {
+    //         console.log("res------->", res?.data);
+    //         const { status, messege } = res?.data
+    //         const statusCode = status === 'Y' ? 'success' : 'error'
+    //         showNotification(statusCode, messege)
+    //     })
+    // }
+
     const ClockInAndOut = () => {
-        let formData = {}
-        formData['employeeId'] = localStorage.getItem("employeeId")
-        formData['attendanceType'] = values?.attendanceType
-        fetch(FRS_URL, formData).then((res) => {
-            console.log("res------->", res?.data);
-            const { status, messege } = res?.data
-            const statusCode = status === 'Y' ? 'success' : 'error'
-            showNotification(statusCode, messege)
+        const token = localStorage.getItem("token"); // Get token from storage
+        const formData = {
+            employeeId: localStorage.getItem("employeeId"),
+            attendanceType: values?.attendanceType
+        };
+
+        fetch('api/employeeRegistration/attendanceSave', {
+            method: 'POST', // Or 'GET' if that's what you meant by "not post"
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`  // ← add token here
+            },
+            body: JSON.stringify(formData)
         })
-    }
+            .then(async (res) => {
+                const data = await res.json();
+                console.log("res------->", data);
+                const { status, messege } = data;
+                const statusCode = status === 'Y' ? 'success' : 'error';
+                showNotification(statusCode, messege);
+            })
+            .catch((err) => {
+                console.error("ClockInAndOut error:", err);
+                showNotification('error', 'Something went wrong while submitting attendance.');
+            });
+    };
+
 
     const [isExpanded, setExpanded] = useState(false);
     return (
