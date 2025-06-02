@@ -16,7 +16,6 @@ import { PasswordField } from "./commonFunctions.jsx";
 import AuthService from "./AuthService.jsx";
 import { useNavigate } from "react-router-dom";
 import { Alert, Col } from "react-bootstrap";
-import { LOGIN_API_URL } from "./AjaxURLs.jsx";
 
 export function LoginForm(props) {
     const { switchToSignup } = useContext(AccountContext);
@@ -144,7 +143,9 @@ export function LoginForm(props) {
                 </FormContainer>
             </FormikProvider>
             <Marginer direction="vertical" margin="1.6em" />
-            <SubmitButton type="submit" form="signInForm">Sign in</SubmitButton>
+            <SubmitButton type="submit" form="signInForm" disabled={formik.isSubmitting}>
+                {formik.isSubmitting ? 'Signing in...' : 'Sign in'}
+            </SubmitButton>
             {errors.submit && (
                 <Col sm={12}>
                     <Alert variant="danger">{errors.submit}</Alert>

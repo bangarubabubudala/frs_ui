@@ -1,0 +1,8 @@
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+export const ACCOUNT_INITIALIZE = 'ACCOUNT_INITIALIZE';
+export const SET_SESSION_POSITION_RED = 'SET_SESSION_POSITION';
+export const SET_SESSION_POSITION_TIME = 'SET_SESSION_POSITION_TIME';
+
+//Loader Actions
+
