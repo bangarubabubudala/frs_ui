@@ -12,9 +12,7 @@ import { LOGOUT } from "./store/actions";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { LOGIN_PAGE_URL } from "./components/AjaxURLs";
-import { useNotification } from "./UTILS/NotificationContext";
-
-const { showNotification } = useNotification();
+import { notify } from "./UTILS/NotificationProvider";
 
 const AppContainer = styled.div`
   width: 100%;
@@ -29,8 +27,6 @@ const AppContainer = styled.div`
 axios.interceptors.request.use(config => {
   const token = "Bearer" + ' ' + localStorage.getItem('token');
   config.headers.Authorization = token;
-  config.headers["X-POSITION-ID"] = localStorage.getItem("positionId")
-  config.headers["X-LOGIN-TYPE"] = localStorage.getItem("loginType")
   return config;
 },
   function (error) {
@@ -47,7 +43,7 @@ axios.interceptors.request.use(config => {
         }
       })
     } else if (error?.response?.status === 500) {
-      showNotification("error", "Something went wrong. Please try again");
+      notify("error", "Something went wrong. Please try again");
     }
     return Promise.reject(error);
   });
@@ -67,7 +63,7 @@ axios.interceptors.response.use(async (config) => {
       }
     })
   } else if (error?.response?.status === 500) {
-    showNotification("error", "Something went wrong. Please try again");
+    notify("error", "Something went wrong. Please try again");
   }
   //failureResponse(error)
   return Promise.reject(error);
@@ -75,8 +71,6 @@ axios.interceptors.response.use(async (config) => {
 
 
 export default function App() {
-
-  const { showNotification } = useNotification();
   const account = useSelector(state => state?.account)
   const MINUTE_MS = 30000;
 

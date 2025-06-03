@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Input } from "./common"; // Adjust path if needed
-import Swal from "sweetalert2";
 import { store } from "../store";
-import { LOGOUT } from "../store/actions";
-import { LOGIN_DOMAIN, LOGIN_PAGE_URL } from "./AjaxURLs";
-import { useNotification } from "../UTILS/NotificationContext";
+import { notify } from "../UTILS/NotificationProvider";
 
 export function PasswordField({ value, onChange, name = "password", placeholder = "Password" }) {
     const [showPassword, setShowPassword] = useState(false);
@@ -99,33 +96,8 @@ export async function failureResponse(res) {
     }
 }
 
-
-
-export default async function Sweetalert(text, icon) {
-    const isConfirm = await Swal.fire({ text: text, icon: icon, confirmButtonColor: '#3085d6', allowEnterKey: false, allowEscapeKey: false, allowOutsideClick: false, confirmButtonText: "Ok" });
-    return isConfirm;
-}
-
 function fireErrorMessage(errorMessage) {
-    // store.dispatch({ type: "HIDE_LOADER", payload: false })
-    Sweetalert(errorMessage, 'warning')
+    notify(errorMessage, 'warning')
 }
-
-
-// export const showNotification = (type, message) => {
-//     if (type === "success") {
-//         Swal.fire('Success', message, 'success');
-//         // NotificationManager.success(message);
-//     } else if (type === "error") {
-//         Swal.fire('Error', message, 'error');
-//         // NotificationManager.error(message);
-//     } else if (type === "warning") {
-//         Swal.fire('Warning', message, 'warning');
-//         // NotificationManager.warning(message);
-//     } else if (type === "info") {
-//         Swal.fire('info', message, 'info');
-//         // NotificationManager.warning(message);
-//     }
-// }
 
 export const apiUrl = process.env.REACT_APP_API_URL;
