@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Input } from "./common"; // Adjust path if needed
 import Swal from "sweetalert2";
+import { store } from "../store";
+import { LOGOUT } from "../store/actions";
+import { LOGIN_DOMAIN, LOGIN_PAGE_URL } from "./AjaxURLs";
+import { useNotification } from "../UTILS/NotificationContext";
 
 export function PasswordField({ value, onChange, name = "password", placeholder = "Password" }) {
     const [showPassword, setShowPassword] = useState(false);
@@ -38,45 +42,58 @@ export function PasswordField({ value, onChange, name = "password", placeholder 
 
 export async function failureResponse(res) {
 
-    let error = "Something Went Wrong. Please Try again";
+    let errorMessage = "Something Went Wrong. Please Try again";
     if (res.request !== undefined) {
         if (res.request.status === 401) {
             // errorMessage = "Please wait we are refreshing your session."
-            // store.dispatch({ type: "HIDE_LOADER", payload: true })
+            store.dispatch({ type: "HIDE_LOADER", payload: true })
         }
         else if (res.request.status === 403) {
-            error = "Forbidden Access"
-            fireErrorMessage(error)
+            console.log("res?.response", res?.response)
+            if (res?.response?.data?.errorMessage === 'INVALID_SESSION_POSITION') {
+                errorMessage = "Please select position"
+            } if (res?.response?.data?.message === 'INVALID_SESSION_POSITION') {
+                errorMessage = "Please select position"
+            } else {
+                errorMessage = "Forbidden Access"
+            }
+            fireErrorMessage(errorMessage)
+            store.dispatch({ type: "HIDE_LOADER", payload: true })
 
         }
         else if (res.request.status === 500) {
             console.log("####", res?.response)
-            if (res.response.data.error !== null && res.response.data.error !== undefined && res.response.data.error.length > 0) {
-                error = res.response.data.error
+            if (res.response.data.errorMessage !== null && res.response.data.errorMessage !== undefined && res.response.data.errorMessage.length > 0) {
+                // Sweetalert(res.response.data.errorMessage, 'warning')
+                errorMessage = res.response.data.errorMessage
             }
-            fireErrorMessage(error)
+            fireErrorMessage(errorMessage)
+            store.dispatch({ type: "HIDE_LOADER", payload: true })
         }
         else if ((res.request.status === 404) || (res.request.status === 400)) {
-            console.log("ghdfhdfhdfhfgh---->", res?.response?.data?.error);
-
-            if (res.response.data.error !== null && res.response.data.error !== undefined && res.response.data.error.length > 0) {
-                error = res.response.data.error;
+            console.log("@@@", res?.response)
+            if (res.response.data.errorMessage !== null && res.response.data.errorMessage !== undefined && res.response.data.errorMessage.length > 0) {
+                errorMessage = res.response.data.errorMessage;
             }
-            fireErrorMessage(error)
+            fireErrorMessage(errorMessage)
+            store.dispatch({ type: "HIDE_LOADER", payload: true })
         }
         else if (res.request.status === 502) {
-            if (res.response.data.error !== null && res.response.data.error !== undefined && res.response.data.error.length > 0) {
-                error = "Server unreachable"
+            if (res.response.data.errorMessage !== null && res.response.data.errorMessage !== undefined && res.response.data.errorMessage.length > 0) {
+                errorMessage = "Server unreachable"
             }
-            fireErrorMessage(error)
+            fireErrorMessage(errorMessage)
+            store.dispatch({ type: "HIDE_LOADER", payload: true })
         }
         else if (res.request.status === 504) {
-            if (res.response.data.error !== null && res.response.data.error !== undefined && res.response.data.error.length > 0) {
-                error = "Server Time out"
+            if (res.response.data.errorMessage !== null && res.response.data.errorMessage !== undefined && res.response.data.errorMessage.length > 0) {
+                errorMessage = "Server Time out"
             }
-            fireErrorMessage(error)
+            fireErrorMessage(errorMessage)
+            store.dispatch({ type: "HIDE_LOADER", payload: true })
         } else {
-            fireErrorMessage(error)
+            fireErrorMessage(errorMessage)
+            store.dispatch({ type: "HIDE_LOADER", payload: true })
         }
 
     }
@@ -95,21 +112,20 @@ function fireErrorMessage(errorMessage) {
 }
 
 
-
-export const showNotification = (type, message) => {
-    if (type === "success") {
-        Swal.fire('Success', message, 'success');
-        // NotificationManager.success(message);
-    } else if (type === "error") {
-        Swal.fire('Error', message, 'error');
-        // NotificationManager.error(message);
-    } else if (type === "warning") {
-        Swal.fire('Warning', message, 'warning');
-        // NotificationManager.warning(message);
-    } else if (type === "info") {
-        Swal.fire('info', message, 'info');
-        // NotificationManager.warning(message);
-    }
-}
+// export const showNotification = (type, message) => {
+//     if (type === "success") {
+//         Swal.fire('Success', message, 'success');
+//         // NotificationManager.success(message);
+//     } else if (type === "error") {
+//         Swal.fire('Error', message, 'error');
+//         // NotificationManager.error(message);
+//     } else if (type === "warning") {
+//         Swal.fire('Warning', message, 'warning');
+//         // NotificationManager.warning(message);
+//     } else if (type === "info") {
+//         Swal.fire('info', message, 'info');
+//         // NotificationManager.warning(message);
+//     }
+// }
 
 export const apiUrl = process.env.REACT_APP_API_URL;

@@ -15,6 +15,7 @@ import masterServices from "./masterServices.jsx";
 import { showNotification } from "./commonFunctions.jsx";
 import { useNavigate } from "react-router-dom";
 import { HiArrowLeft } from "react-icons/hi";
+import CustomErrorMessage from "../UTILS/CustomErrorMessage.jsx";
 
 const options = [
     { label: "Clock In", value: "I" },
@@ -23,7 +24,7 @@ const options = [
 
 export function ActionPage() {
     const validationSchema = Yup.object().shape({
-        selectedOption: Yup.object().required("Please select an option").nullable(),
+        attendanceType: Yup.string().required("Please select an option").nullable(),
     });
 
     const navigate = useNavigate();
@@ -117,13 +118,9 @@ export function ActionPage() {
                                     setFieldValue("attendanceType", selectedOption?.value)
                                 }}
                                 placeholder="Select an option"
-                                 styles={customSelectStyles}
+                                styles={customSelectStyles}
                             />
-                            {errors.selectedOption && touched.selectedOption && (
-                                <div style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>
-                                    {errors.selectedOption}
-                                </div>
-                            )}
+                            <CustomErrorMessage name="attendanceType" />
                         </FormContainer>
                     </FormikProvider>
                     <Marginer direction="vertical" margin="1.6em" />

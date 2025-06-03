@@ -152,8 +152,8 @@ export default function AccountBox() {
           />
           {active === "signin" && (
             <HeaderContainer>
-              <HeaderText>Welcome</HeaderText>
-              <HeaderText>Back</HeaderText>
+              <HeaderText>Welcome to</HeaderText>
+              <HeaderText>FRS</HeaderText>
               <SmallText>Please sign-in to continue!</SmallText>
             </HeaderContainer>
           )}
