@@ -5,6 +5,7 @@ import {
     BoxContainer as CommonBox,
     customSelectStyles,
     FormContainer,
+    ScrollingBanner,
     SubmitButton
 } from "./common.jsx";
 import { Marginer } from "../marginer/index.jsx";
@@ -16,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 import { HiArrowLeft } from "react-icons/hi";
 import CustomErrorMessage from "../UTILS/CustomErrorMessage.jsx";
 import { notify } from "../UTILS/NotificationProvider.jsx";
+import { FaExclamationTriangle } from 'react-icons/fa';
+
 
 const options = [
     { label: "Clock In", value: "I" },
@@ -59,6 +62,11 @@ export function ActionPage() {
 
 
     const [isExpanded, setExpanded] = useState(false);
+
+    const today = new Date();
+    const isWeekend = today.getDay() === 0 || today.getDay() === 6; // Sunday = 0, Saturday = 6
+
+
     return (
         <BoxContainer>
             <BackButton onClick={() => navigate(-1)} title="Go back">
@@ -78,6 +86,16 @@ export function ActionPage() {
                 </HeaderContainer>
             </TopContainer>
             <InnerContainer>
+                {isWeekend && (
+                    <ScrollingBanner>
+                        <div className="scroll-text">
+                            <FaExclamationTriangle />
+                            FRS is not allowed on weekends
+                            <FaExclamationTriangle />
+                        </div>
+                    </ScrollingBanner>
+                )}
+
                 <CommonBox>
                     <FormikProvider value={formik}>
                         <FormContainer onSubmit={handleSubmit} noValidate name="frsForm" id="frsForm">
@@ -91,12 +109,13 @@ export function ActionPage() {
                                 }}
                                 placeholder="Select an option"
                                 styles={customSelectStyles}
+                                isDisabled={isWeekend}
                             />
                             <CustomErrorMessage name="attendanceType" />
                         </FormContainer>
                     </FormikProvider>
                     <Marginer direction="vertical" margin="1.6em" />
-                    <SubmitButton type="submit" form="frsForm"> Submit </SubmitButton>
+                    <SubmitButton type="submit" form="frsForm" disabled={isWeekend}> Submit </SubmitButton>
                     {errors.submit && (
                         <div style={{ color: "red", fontSize: "14px", marginTop: "10px" }}>
                             {errors.submit}
