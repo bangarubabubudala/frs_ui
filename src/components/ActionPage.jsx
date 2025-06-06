@@ -18,6 +18,7 @@ import { HiArrowLeft } from "react-icons/hi";
 import CustomErrorMessage from "../UTILS/CustomErrorMessage.jsx";
 import { notify } from "../UTILS/NotificationProvider.jsx";
 import { FaExclamationTriangle } from 'react-icons/fa';
+import { Navbar } from "../UTILS/Navbar.jsx";
 
 
 const options = [
@@ -69,9 +70,7 @@ export function ActionPage() {
 
     return (
         <BoxContainer>
-            <BackButton onClick={() => navigate(-1)} title="Go back">
-                <HiArrowLeft size={18} />
-            </BackButton>
+            <Navbar showBackButton={true} />
             <TopContainer>
                 <BackDrop
                     initial={false}
@@ -95,7 +94,6 @@ export function ActionPage() {
                         </div>
                     </ScrollingBanner>
                 )}
-
                 <CommonBox>
                     <FormikProvider value={formik}>
                         <FormContainer onSubmit={handleSubmit} noValidate name="frsForm" id="frsForm">

@@ -36,20 +36,27 @@ export const Input = styled.input`
   outline: none;
   border: 1px solid rgba(200, 200, 200, 0.3);
   border-radius: 5px;
-  padding: 0px 10px;
-  transition: all 200ms ease-in-out;
+  padding: 0 10px;
   margin-bottom: 5px;
 
-  &::placeholder {
-    color: rgba(200, 200, 200, 1);
-  }
+  background: rgba(255, 255, 255, 0.85);  /* light translucent background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* soft shadow for "floating" */
+  backdrop-filter: blur(6px); /* optional: subtle blur behind input */
 
+  transition: all 200ms ease-in-out;
+
+  &::placeholder {
+    color: rgba(150, 150, 150, 0.9);
+  }
 
   &:focus {
-    outline: none;
-    border-bottom: 1px solid rgba(241, 196, 15, 1);
+    border-color: rgb(4, 196, 100);
+    box-shadow: 0 6px 6px rgba(4, 88, 29, 0.34); /* glowing shadow on focus */
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
   }
 `;
+
 
 export const SubmitButton = styled.button`
   width: 100%;
@@ -57,8 +64,10 @@ export const SubmitButton = styled.button`
   padding: 10px 24px;
   font-size: 16px;
   font-weight: 700;
-  color: rgb(32, 53, 74);
-  background-color: rgba(241, 196, 15, 1);
+  color:rgb(0, 153, 89);
+  background: #283048;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #859398, #283048);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #859398, #283048); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   border: none;
   border-radius: 25px;
   cursor: pointer;
@@ -69,11 +78,10 @@ export const SubmitButton = styled.button`
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   user-select: none;
   transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
-
   &:hover {
     background-color: #2c3e50;
     box-shadow: 0 6px 16px rgba(44, 62, 80, 0.6);
-    color: #e67e22;
+    color: rgb(32, 53, 74);
   }
 
   &:disabled {
@@ -87,7 +95,7 @@ export const SubmitButton = styled.button`
 
 
 export const BackButton = styled.button`
-  position: absolute;
+  position: relative;
   top: 20px;
   right: 20px;
   width: 36px;
@@ -109,7 +117,10 @@ export const BackButton = styled.button`
   &:hover {
     background-color: #2c80b4; /* Hover color */
   }
-`;
+  &:focus {
+  outline: 2px solid #2980b9;
+  outline-offset: 2px;
+}`;
 
 export const LineText = styled.p`
   font-size: 12px;
