@@ -81,6 +81,7 @@ export function LoginForm(props) {
                 setStatus({ success: false });
                 setErrors({ submit: res.data.sdesc });
                 setSubmitting(false);
+                store.dispatch({ type: "HIDE_LOADER", payload: false })
             }
         } catch (error) {
             console.log("enters here 3");
@@ -92,6 +93,7 @@ export function LoginForm(props) {
             setStatus({ success: false });
             setErrors({ submit: msg });
             setSubmitting(false);
+            store.dispatch({ type: "HIDE_LOADER", payload: false })
         }
     };
 

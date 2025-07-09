@@ -50,12 +50,12 @@ export const NotificationProvider = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (state.visible) {
-      const timer = setTimeout(() => close(), 3500);
-      return () => clearTimeout(timer);
-    }
-  }, [state.visible]);
+  // useEffect(() => {
+  //   if (state.visible) {
+  //     const timer = setTimeout(() => close(), 3500);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [state.visible]);
 
   if (!state.visible) return null;
 
