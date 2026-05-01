@@ -30,7 +30,8 @@ export function LoginForm(props) {
 
     const initialValues = {
         username: "",
-        password: ""
+        password: "",
+        device_type: "mobile"
     }
     const validationSchema = Yup.object().shape({
         username: Yup.string().required('User ID is Required').nullable(),
